@@ -1,0 +1,1 @@
+export { getNewNote } from "./common";
