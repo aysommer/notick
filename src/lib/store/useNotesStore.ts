@@ -6,12 +6,13 @@ type UseNotesStore = {
    notes: Note[];
    addNote(): void;
    getNote(id: Note["id"]): Note;
+   updateNote(value: Note): void;
    deleteNote(id: Note["id"]): void;
 };
 
 const LOCAL_STORAGE_KEY = "notes";
 
-function getNotesFromLocalStorage(): Note[] {
+function getNotesFromCache(): Note[] {
    const value = localStorage.getItem(LOCAL_STORAGE_KEY);
    if (value) {
       return JSON.parse(value) as Note[];
@@ -19,12 +20,21 @@ function getNotesFromLocalStorage(): Note[] {
    return [];
 }
 
+function setNotesToCache(value: Note[]): void {
+   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
+}
+
 const useNotesStore = create<UseNotesStore>((set, get) => ({
-   notes: getNotesFromLocalStorage(),
+   notes: getNotesFromCache(),
+   getNote(id) {
+      const state = get();
+      const [result] = state.notes.filter((note) => note.id === id);
+      return result;
+   },
    addNote() {
       return set((state) => {
          const notes = [...state.notes, getNewNote()];
-         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
+         setNotesToCache(notes);
 
          return {
             ...state,
@@ -32,15 +42,28 @@ const useNotesStore = create<UseNotesStore>((set, get) => ({
          };
       });
    },
-   getNote(id) {
-      const state = get();
-      const [result] = state.notes.filter((note) => note.id === id);
-      return result;
+   updateNote(value) {
+      return set((state) => {
+         const notes = [...state.notes].map((note) =>
+            value.id === note.id
+               ? {
+                    ...note,
+                    ...value,
+                 }
+               : note
+         );
+         setNotesToCache(notes);
+
+         return {
+            ...state,
+            notes,
+         };
+      });
    },
    deleteNote(id) {
       return set((state) => {
          const notes = [...state.notes].filter((note) => note.id !== id);
-         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
+         setNotesToCache(notes);
 
          return {
             ...state,

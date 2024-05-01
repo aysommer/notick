@@ -4,6 +4,7 @@ import { useNotesStore, useNoteStore } from "../../store";
 import { Note } from "../../types";
 
 const ListItemStyle: React.CSSProperties = {
+   cursor: "pointer",
    paddingTop: 4,
    paddingBottom: 4,
    paddingLeft: 8,

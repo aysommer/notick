@@ -4,7 +4,7 @@ import { getNewNote } from "../utils";
 
 type UseNoteStore = Note & {
    isActive: boolean;
-   setNote(value: Note): void;
+   setNote(value: Partial<Note>): void;
    setActive(value: UseNoteStore["isActive"]): void;
 };
 
