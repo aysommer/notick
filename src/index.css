@@ -13,3 +13,13 @@ body,
    height: 100%;
    width: 100%;
 }
+
+::-webkit-scrollbar {
+   width: 6px;
+   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+   background: #001529;
+   border-radius: 10px;
+}

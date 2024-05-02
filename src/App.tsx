@@ -18,12 +18,14 @@ const contentStyle: CSSProperties = {
    textAlign: "center",
    minHeight: 120,
    lineHeight: "120px",
+   overflowY: "auto",
 };
 
 const siderStyle: CSSProperties = {
    textAlign: "center",
    lineHeight: "120px",
    backgroundColor: "white",
+   overflowY: "auto",
 };
 
 const layoutStyle = {
