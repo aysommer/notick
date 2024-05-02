@@ -1,13 +1,19 @@
-import { Button, List } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Dropdown, Flex, List } from "antd";
+import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
 import { Note } from "../../types";
 
-const ListItemStyle: React.CSSProperties = {
+const listItemStyle: React.CSSProperties = {
    cursor: "pointer",
-   paddingTop: 4,
-   paddingBottom: 4,
-   paddingLeft: 8,
+   padding: 12,
+};
+
+const itemActionIconStyle: React.CSSProperties = {
+   marginLeft: 12,
+};
+
+const listItemIconStyle: React.CSSProperties = {
+   marginRight: 8,
 };
 
 const NoteList: React.FC = () => {
@@ -15,6 +21,7 @@ const NoteList: React.FC = () => {
    const setNote = useNoteStore((state) => state.setNote);
    const setActive = useNoteStore((state) => state.setActive);
    const getNote = useNotesStore((state) => state.getNote);
+   const updateNote = useNotesStore((state) => state.updateNote);
    const deleteNote = useNotesStore((state) => state.deleteNote);
 
    const onSetNote = (id: Note["id"]) => {
@@ -22,24 +29,60 @@ const NoteList: React.FC = () => {
       setNote(note);
    };
 
-   const onDeleteNote = (event: React.MouseEvent<HTMLElement, MouseEvent>, id: Note["id"]) => {
-      event.stopPropagation();
+   const onDeleteNote = (id: Note["id"], event?: React.MouseEvent<HTMLElement, MouseEvent> | null) => {
+      if (event) {
+         event.stopPropagation();
+      }
       setActive(false);
       deleteNote(id);
    };
 
+   const onTogglePinNote = (id: Note["id"]) => {
+      const note = getNote(id);
+      updateNote({
+         ...note,
+         isPinned: !note.isPinned,
+      });
+   };
+
+   const allNotes = [...notes.filter((note) => note.isPinned), ...notes.filter((note) => !note.isPinned)];
+
    return (
       <List
-         dataSource={notes}
+         dataSource={allNotes}
          renderItem={(item) => (
-            <List.Item
-               key={item.id}
-               style={ListItemStyle}
-               actions={[<Button shape="circle" onClick={(e) => onDeleteNote(e, item.id)} icon={<DeleteOutlined />} />]}
-               onClick={() => onSetNote(item.id)}
+            <Dropdown
+               menu={{
+                  items: [
+                     {
+                        key: "togglePin",
+                        label: (
+                           <Flex justify="space-between">
+                              {!item.isPinned ? "Pin" : "Unpin"} <PushpinOutlined style={itemActionIconStyle} />
+                           </Flex>
+                        ),
+                        onClick: () => onTogglePinNote(item.id),
+                     },
+                     {
+                        key: "delete",
+                        label: (
+                           <Flex justify="space-between">
+                              Delete <DeleteOutlined style={itemActionIconStyle} />
+                           </Flex>
+                        ),
+                        onClick: () => onDeleteNote(item.id),
+                     },
+                  ],
+               }}
+               trigger={["contextMenu"]}
             >
-               {item.title ? item.title : "New note..."}
-            </List.Item>
+               <List.Item key={item.id} style={listItemStyle} actions={[]} onClick={() => onSetNote(item.id)}>
+                  <Flex>
+                     {item.isPinned ? <PushpinOutlined style={listItemIconStyle} /> : null}
+                     {item.title ? item.title : "New note..."}
+                  </Flex>
+               </List.Item>
+            </Dropdown>
          )}
       />
    );

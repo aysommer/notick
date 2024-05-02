@@ -1,11 +1,19 @@
-import { Flex, Input } from "antd";
+import { Flex, Input, InputRef } from "antd";
+import React, { useRef } from "react";
 import { useNotesStore, useNoteStore } from "../../store";
 
-const titleStyles: React.CSSProperties = {
+const rootStyles: React.CSSProperties = {
+   padding: 16,
+};
+
+const boldStyles: React.CSSProperties = {
    fontWeight: 700,
 };
 
 const NoteView: React.FC = () => {
+   const titleRef = useRef<InputRef>();
+   const textRef = useRef<InputRef>();
+
    const note = useNoteStore();
    const updateNote = useNotesStore((state) => state.updateNote);
 
@@ -18,33 +26,51 @@ const NoteView: React.FC = () => {
       });
    };
 
+   const onTitleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.code === "Enter") {
+         event.preventDefault();
+         textRef.current?.focus();
+      }
+   };
+
+   const onTextKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (note.text.length === 0 && event.code === "Backspace") {
+         event.preventDefault();
+         titleRef.current?.focus();
+      }
+   };
+
    const onBlur = () => {
       updateNote(note);
    };
 
    return note.isActive ? (
-      <Flex vertical>
+      <Flex vertical style={rootStyles}>
          <Input
-            style={titleStyles}
+            ref={titleRef}
+            style={boldStyles}
             value={note.title}
             name="title"
             variant="borderless"
             placeholder="Type some title..."
             onChange={onChangeNote}
+            onKeyDown={onTitleKeyDown}
             onBlur={onBlur}
          />
          <Input.TextArea
+            ref={textRef}
             value={note.text}
             name="text"
             autoSize
             variant="borderless"
             placeholder="Type some text..."
             onChange={onChangeNote}
+            onKeyDown={onTextKeyDown}
             onBlur={onBlur}
          />
       </Flex>
    ) : (
-      <span>Choice note</span>
+      <span style={boldStyles}>Choice note</span>
    );
 };
 

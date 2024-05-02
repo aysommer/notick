@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react";
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
 import { NoteList } from "./lib/components/noteList";
 import { AddButton } from "./lib/components/addButton";
 import { NoteView } from "./lib/components/noteView";
+import { CHANGE_LOG_URL } from "./lib/consts";
 
 const headerStyle: CSSProperties = {
    textAlign: "center",
@@ -30,10 +31,18 @@ const layoutStyle = {
    height: "100%",
 };
 
+const buttonStyle = {
+   color: "white",
+};
+
 const App: React.FC = () => {
    return (
       <Layout style={layoutStyle}>
-         <Layout.Header style={headerStyle}>notick</Layout.Header>
+         <Layout.Header style={headerStyle}>
+            <Button style={buttonStyle} type="link" href={CHANGE_LOG_URL} color="white" target="_blank">
+               notick
+            </Button>
+         </Layout.Header>
          <Layout>
             <Layout.Sider width="25%" style={siderStyle}>
                <NoteList />

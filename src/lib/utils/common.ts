@@ -5,5 +5,6 @@ export function getNewNote(): Note {
       id: crypto.randomUUID(),
       title: "",
       text: "",
+      isPinned: false,
    };
 }
