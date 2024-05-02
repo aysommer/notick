@@ -70,7 +70,9 @@ const NoteView: React.FC = () => {
          />
       </Flex>
    ) : (
-      <span style={boldStyles}>Choice note</span>
+      <Flex style={rootStyles}>
+         <span style={boldStyles}>Choice note</span>
+      </Flex>
    );
 };
 
