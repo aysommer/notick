@@ -47,7 +47,7 @@ const NoteView: React.FC = () => {
    return note.isActive ? (
       <Flex vertical style={rootStyles}>
          <Input
-            ref={titleRef}
+            ref={titleRef as any}
             style={boldStyles}
             value={note.title}
             name="title"
@@ -58,7 +58,7 @@ const NoteView: React.FC = () => {
             onBlur={onBlur}
          />
          <Input.TextArea
-            ref={textRef}
+            ref={textRef as any}
             value={note.text}
             name="text"
             autoSize
