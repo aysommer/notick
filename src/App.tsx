@@ -4,6 +4,7 @@ import { NoteList } from "./lib/components/noteList";
 import { AddButton } from "./lib/components/addButton";
 import { NoteView } from "./lib/components/noteView";
 import { CHANGE_LOG_URL } from "./lib/consts";
+import { NoteSearch } from "./lib/components/noteSearch";
 
 const headerStyle: CSSProperties = {
    textAlign: "center",
@@ -44,6 +45,7 @@ const App: React.FC = () => {
          </Layout.Header>
          <Layout>
             <Layout.Sider width="25%" style={siderStyle}>
+               <NoteSearch />
                <NoteList />
             </Layout.Sider>
             <Layout.Content style={contentStyle}>

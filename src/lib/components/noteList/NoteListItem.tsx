@@ -1,12 +1,12 @@
-import type { Note } from '../../types';
-import React from 'react'
-import { Dropdown, Flex } from 'antd';
+import type { Note } from "../../types";
+import React from "react";
+import { Button, Dropdown, Flex } from "antd";
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
 
 const listItemStyle: React.CSSProperties = {
-   cursor: "pointer",
-   padding: 12,
+   borderRadius: 0,
+   textAlign: "left",
 };
 
 const itemActionIconStyle: React.CSSProperties = {
@@ -54,7 +54,7 @@ const NoteListItem: React.FC<NoteListItemProps> = (props) => {
                         {!isPinned ? "Pin" : "Unpin"} <PushpinOutlined style={itemActionIconStyle} />
                      </Flex>
                   ),
-                  onClick: onTogglePinNote
+                  onClick: onTogglePinNote,
                },
                {
                   key: "delete",
@@ -63,18 +63,18 @@ const NoteListItem: React.FC<NoteListItemProps> = (props) => {
                         Delete <DeleteOutlined style={itemActionIconStyle} />
                      </Flex>
                   ),
-                  onClick: onDeleteNote
+                  onClick: onDeleteNote,
                },
             ],
          }}
          trigger={["contextMenu"]}
       >
-         <Flex style={listItemStyle} onClick={onSetNote}>
+         <Button style={listItemStyle} onClick={onSetNote} type="text">
             {isPinned ? <PushpinOutlined style={listItemIconStyle} /> : null}
             {title ? title : "New note..."}
-         </Flex>
+         </Button>
       </Dropdown>
-   )
-}
+   );
+};
 
 export default React.memo(NoteListItem);

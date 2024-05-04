@@ -4,18 +4,34 @@ import NoteListItem from "./NoteListItem";
 
 const NoteList: React.FC = () => {
    const notes = useNotesStore((state) => state.notes);
-   const allNotes = [
-      ...notes.filter((note) => note.isPinned),
-      ...notes.filter((note) => !note.isPinned)
-   ];
+   const searchValue = useNotesStore((state) => state.searchValue);
 
-   return (allNotes.length > 0) ? (
+   let allNotes = [...notes.filter((note) => note.isPinned), ...notes.filter((note) => !note.isPinned)];
+
+   const handledTrimmedValue = searchValue.trim().toLowerCase();
+   if (handledTrimmedValue.length > 0) {
+      allNotes = allNotes.filter(({ title, text }) => {
+         const handledTitle = title.trim().toLowerCase();
+         const handledText = text.trim().toLowerCase();
+         if (handledTitle.length > 0) {
+            return handledTitle.includes(handledTrimmedValue);
+         }
+         if (handledText.length > 0) {
+            return handledText.includes(handledTrimmedValue);
+         }
+         return false;
+      });
+   }
+
+   return allNotes.length > 0 ? (
       <Flex vertical>
-         {allNotes.map((note) => <NoteListItem key={note.id} {...note} />)}
+         {allNotes.map((note) => (
+            <NoteListItem key={note.id} {...note} />
+         ))}
       </Flex>
    ) : (
       <span>No data</span>
-   )
+   );
 };
 
 export default NoteList;

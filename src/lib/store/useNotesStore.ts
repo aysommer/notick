@@ -4,10 +4,12 @@ import { getNewNote } from "../utils";
 
 type UseNotesStore = {
    notes: Note[];
+   searchValue: string;
    addNote(): void;
    getNote(id: Note["id"]): Note;
    updateNote(value: Note): void;
    deleteNote(id: Note["id"]): void;
+   setSearchValue(value: string): void;
 };
 
 const LOCAL_STORAGE_KEY = "notes";
@@ -26,6 +28,7 @@ function setNotesToCache(value: Note[]): void {
 
 const useNotesStore = create<UseNotesStore>((set, get) => ({
    notes: getNotesFromCache(),
+   searchValue: "",
    getNote(id) {
       const state = get();
       const [result] = state.notes.filter((note) => note.id === id);
@@ -68,6 +71,14 @@ const useNotesStore = create<UseNotesStore>((set, get) => ({
          return {
             ...state,
             notes,
+         };
+      });
+   },
+   setSearchValue(value) {
+      return set((state) => {
+         return {
+            ...state,
+            searchValue: value,
          };
       });
    },
