@@ -6,5 +6,6 @@ export function getNewNote(): Note {
       title: "",
       text: "",
       isPinned: false,
+      isArchived: false,
    };
 }

@@ -1,6 +1,11 @@
-import { Flex } from "antd";
+import { Empty, Flex } from "antd";
+import { CSSProperties } from "react";
 import { useNotesStore } from "../../store";
 import NoteListItem from "./NoteListItem";
+
+const emptyStyles: CSSProperties = {
+   padding: 16,
+};
 
 const NoteList: React.FC = () => {
    const notes = useNotesStore((state) => state.notes);
@@ -30,7 +35,7 @@ const NoteList: React.FC = () => {
          ))}
       </Flex>
    ) : (
-      <span>No data</span>
+      <Empty style={emptyStyles} />
    );
 };
 

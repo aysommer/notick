@@ -7,6 +7,7 @@ const rootStyles: CSSProperties = {
 };
 
 const NoteSearch: React.FC = () => {
+   const notes = useNotesStore((state) => state.notes);
    const searchValue = useNotesStore((state) => state.searchValue);
    const setSearchValue = useNotesStore((state) => state.setSearchValue);
 
@@ -14,11 +15,11 @@ const NoteSearch: React.FC = () => {
       setSearchValue(event.target.value);
    }, []);
 
-   return (
+   return notes.length > 0 ? (
       <div style={rootStyles}>
          <Input value={searchValue} onChange={onChange} placeholder="Search note..." allowClear />
       </div>
-   );
+   ) : null;
 };
 
 export default NoteSearch;

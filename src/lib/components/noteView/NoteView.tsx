@@ -1,10 +1,11 @@
 import React, { CSSProperties, useRef } from "react";
-import { Flex, Input, InputRef } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { Button, Empty, Flex, Input, InputRef } from "antd";
+import { CloseCircleOutlined, SmileOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
 
 const rootStyles: CSSProperties = {
    padding: 16,
+   height: "100%",
 };
 
 const boldStyles: CSSProperties = {
@@ -20,6 +21,8 @@ const NoteView: React.FC = () => {
    const textRef = useRef<InputRef>();
 
    const note = useNoteStore();
+   const notes = useNotesStore((state) => state.notes);
+   const addNote = useNotesStore((state) => state.addNote);
    const updateNote = useNotesStore((state) => state.updateNote);
 
    const onChangeNote = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -82,8 +85,17 @@ const NoteView: React.FC = () => {
          />
       </Flex>
    ) : (
-      <Flex style={rootStyles}>
-         <span style={boldStyles}>Choice note</span>
+      <Flex style={rootStyles} align="center" justify="center">
+         <Empty
+            image={notes.length > 0 ? null : "https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"}
+            description={notes.length > 0 ? "Select note" : ""}
+         >
+            {notes.length > 0 ? null : (
+               <Button type="primary" onClick={addNote}>
+                  Add note
+               </Button>
+            )}
+         </Empty>
       </Flex>
    );
 };

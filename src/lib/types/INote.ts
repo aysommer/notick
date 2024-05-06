@@ -3,4 +3,5 @@ export type Note = {
    title: string;
    text: string;
    isPinned: boolean;
+   isArchived: boolean;
 };
