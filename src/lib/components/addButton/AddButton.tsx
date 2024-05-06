@@ -6,7 +6,7 @@ const AddButton: React.FC = () => {
    const notes = useNotesStore((state) => state.notes);
    const addNote = useNotesStore((state) => state.addNote);
 
-   return notes.length > 0 ? <FloatButton icon={<PlusOutlined />} onClick={addNote} /> : null;
+   return notes.length > 0 ? <FloatButton icon={<PlusOutlined />} onClick={addNote} tooltip="Add note" /> : null;
 };
 
 export default AddButton;

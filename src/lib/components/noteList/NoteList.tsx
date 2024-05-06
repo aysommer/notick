@@ -16,15 +16,17 @@ const NoteList: React.FC = () => {
    const handledTrimmedValue = searchValue.trim().toLowerCase();
    if (handledTrimmedValue.length > 0) {
       allNotes = allNotes.filter(({ title, text }) => {
+         let isFound = false;
          const handledTitle = title.trim().toLowerCase();
          const handledText = text.trim().toLowerCase();
+
          if (handledTitle.length > 0) {
-            return handledTitle.includes(handledTrimmedValue);
+            isFound = handledTitle.includes(handledTrimmedValue);
          }
          if (handledText.length > 0) {
-            return handledText.includes(handledTrimmedValue);
+            isFound = handledText.includes(handledTrimmedValue);
          }
-         return false;
+         return isFound;
       });
    }
 

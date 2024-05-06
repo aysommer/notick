@@ -70,7 +70,7 @@ const NoteView: React.FC = () => {
                onKeyDown={onTitleKeyDown}
                onBlur={onBlur}
             />
-            <CloseCircleOutlined style={closeNoteIconStyles} onClick={onCloseClick} />
+            <CloseCircleOutlined style={closeNoteIconStyles} onClick={onCloseClick} title="Close note" />
          </Flex>
          <Input.TextArea
             ref={textRef as any}
