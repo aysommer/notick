@@ -1,6 +1,6 @@
 import React, { CSSProperties, useRef } from "react";
 import { Button, Empty, Flex, Input, InputRef } from "antd";
-import { CloseCircleOutlined, SmileOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
 
 const rootStyles: CSSProperties = {
