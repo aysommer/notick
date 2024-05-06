@@ -1,13 +1,18 @@
+import React, { CSSProperties, useRef } from "react";
 import { Flex, Input, InputRef } from "antd";
-import React, { useRef } from "react";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
 
-const rootStyles: React.CSSProperties = {
+const rootStyles: CSSProperties = {
    padding: 16,
 };
 
-const boldStyles: React.CSSProperties = {
+const boldStyles: CSSProperties = {
    fontWeight: 700,
+};
+
+const closeNoteIconStyles: CSSProperties = {
+   cursor: "pointer",
 };
 
 const NoteView: React.FC = () => {
@@ -44,19 +49,26 @@ const NoteView: React.FC = () => {
       updateNote(note);
    };
 
+   const onCloseClick = () => {
+      note.setActive(false);
+   };
+
    return note.isActive ? (
       <Flex vertical style={rootStyles}>
-         <Input
-            ref={titleRef as any}
-            style={boldStyles}
-            value={note.title}
-            name="title"
-            variant="borderless"
-            placeholder="Type some title..."
-            onChange={onChangeNote}
-            onKeyDown={onTitleKeyDown}
-            onBlur={onBlur}
-         />
+         <Flex>
+            <Input
+               ref={titleRef as any}
+               style={boldStyles}
+               value={note.title}
+               name="title"
+               variant="borderless"
+               placeholder="Type some title..."
+               onChange={onChangeNote}
+               onKeyDown={onTitleKeyDown}
+               onBlur={onBlur}
+            />
+            <CloseCircleOutlined style={closeNoteIconStyles} onClick={onCloseClick} />
+         </Flex>
          <Input.TextArea
             ref={textRef as any}
             value={note.text}
