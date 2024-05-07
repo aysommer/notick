@@ -1,15 +1,12 @@
-import React, { CSSProperties, useRef } from "react";
+import React, { CSSProperties, useMemo, useRef } from "react";
 import { Button, Empty, Flex, Input, InputRef } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
+import useSettingsStore from "../../store/useSettingsStore";
 
 const rootStyles: CSSProperties = {
    padding: 16,
    height: "100%",
-};
-
-const boldStyles: CSSProperties = {
-   fontWeight: 700,
 };
 
 const closeNoteIconStyles: CSSProperties = {
@@ -24,6 +21,26 @@ const NoteView: React.FC = () => {
    const notes = useNotesStore((state) => state.notes);
    const addNote = useNotesStore((state) => state.addNote);
    const updateNote = useNotesStore((state) => state.updateNote);
+   const fontSize = useSettingsStore((state) => state.fontSize);
+   const fontColor = useSettingsStore((state) => state.fontColor);
+
+   const inputTitleStyles = useMemo<CSSProperties>(
+      () => ({
+         fontSize,
+         color: fontColor,
+         fontWeight: 700,
+      }),
+      [fontSize, fontColor]
+   );
+   const inputTextStyles = useMemo<CSSProperties>(
+      () => ({
+         fontSize,
+         color: fontColor,
+         height: "100%",
+         resize: "none",
+      }),
+      [fontSize, fontColor]
+   );
 
    const onChangeNote = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const name = target.name as keyof Node;
@@ -61,7 +78,8 @@ const NoteView: React.FC = () => {
          <Flex>
             <Input
                ref={titleRef as any}
-               style={boldStyles}
+               style={inputTitleStyles}
+               color={fontColor}
                value={note.title}
                name="title"
                variant="borderless"
@@ -74,9 +92,10 @@ const NoteView: React.FC = () => {
          </Flex>
          <Input.TextArea
             ref={textRef as any}
+            style={inputTextStyles}
+            color={fontColor}
             value={note.text}
             name="text"
-            autoSize
             variant="borderless"
             placeholder="Type some text..."
             onChange={onChangeNote}

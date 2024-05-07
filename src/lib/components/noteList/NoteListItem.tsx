@@ -7,6 +7,9 @@ import { useNotesStore, useNoteStore } from "../../store";
 const listItemStyle: React.CSSProperties = {
    borderRadius: 0,
    textAlign: "left",
+   textOverflow: "ellipsis",
+   whiteSpace: "noWrap",
+   overflow: "hidden",
 };
 
 const itemActionIconStyle: React.CSSProperties = {

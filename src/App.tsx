@@ -1,10 +1,11 @@
 import type { CSSProperties } from "react";
-import { Button, Layout } from "antd";
+import { Layout } from "antd";
 import { NoteList } from "./lib/components/noteList";
 import { AddButton } from "./lib/components/addButton";
 import { NoteView } from "./lib/components/noteView";
-import { CHANGE_LOG_URL } from "./lib/consts";
 import { NoteSearch } from "./lib/components/noteSearch";
+import { HeaderControllers } from "./lib/components/headerControllers";
+import { SettingsModal } from "./lib/components/modals";
 
 const headerStyle: CSSProperties = {
    textAlign: "center",
@@ -31,29 +32,26 @@ const layoutStyle = {
    height: "100%",
 };
 
-const buttonStyle = {
-   color: "white",
-};
-
 const App: React.FC = () => {
    return (
-      <Layout style={layoutStyle}>
-         <Layout.Header style={headerStyle}>
-            <Button style={buttonStyle} type="link" href={CHANGE_LOG_URL} color="white" target="_blank">
-               notick
-            </Button>
-         </Layout.Header>
-         <Layout>
-            <Layout.Sider width="25%" style={siderStyle}>
-               <NoteSearch />
-               <NoteList />
-            </Layout.Sider>
-            <Layout.Content style={contentStyle}>
-               <NoteView />
-            </Layout.Content>
+      <>
+         <Layout style={layoutStyle}>
+            <Layout.Header style={headerStyle}>
+               <HeaderControllers />
+            </Layout.Header>
+            <Layout>
+               <Layout.Sider width="25%" style={siderStyle}>
+                  <NoteSearch />
+                  <NoteList />
+               </Layout.Sider>
+               <Layout.Content style={contentStyle}>
+                  <NoteView />
+               </Layout.Content>
+            </Layout>
+            <AddButton />
          </Layout>
-         <AddButton />
-      </Layout>
+         <SettingsModal/>
+      </>
    );
 };
 

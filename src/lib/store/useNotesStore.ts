@@ -14,6 +14,9 @@ type UseNotesStore = {
 
 const LOCAL_STORAGE_KEY = "notes";
 
+// FIXME: Need unify:
+// - useNotesStore,
+// - useSettingsStore
 function getNotesFromCache(): Note[] {
    const value = localStorage.getItem(LOCAL_STORAGE_KEY);
    if (value) {
