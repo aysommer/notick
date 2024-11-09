@@ -1,11 +1,11 @@
 import type { CSSProperties } from "react";
 import { Layout } from "antd";
-import { NoteList } from "./lib/components/noteList";
-import { AddButton } from "./lib/components/addButton";
-import { NoteView } from "./lib/components/noteView";
-import { NoteSearch } from "./lib/components/noteSearch";
-import { HeaderControllers } from "./lib/components/headerControllers";
-import { SettingsModal } from "./lib/components/modals";
+import { NoteList } from "./components/noteList";
+import { AddButton } from "./components/addButton";
+import { NoteView } from "./components/noteView";
+import { NoteSearch } from "./components/noteSearch";
+import { HeaderControllers } from "./components/headerControllers";
+import { Modals } from "./components/modals";
 
 const headerStyle: CSSProperties = {
    textAlign: "center",
@@ -13,7 +13,9 @@ const headerStyle: CSSProperties = {
    height: 64,
    paddingInline: 48,
    lineHeight: "64px",
-   color: "white",
+   color: "black",
+   backgroundColor: "white",
+   borderBottom: "solid 1px #EEE"
 };
 
 const contentStyle: CSSProperties = {
@@ -50,7 +52,7 @@ const App: React.FC = () => {
             </Layout>
             <AddButton />
          </Layout>
-         <SettingsModal/>
+         <Modals />
       </>
    );
 };

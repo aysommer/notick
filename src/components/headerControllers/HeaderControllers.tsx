@@ -1,9 +1,12 @@
 import { Flex, Button } from "antd";
+import { SettingFilled } from '@ant-design/icons';
 import { CSSProperties } from "react";
 import { CHANGE_LOG_URL } from "../../consts";
 import { useModalStore } from "../../store";
-const buttonStyle = {
-   color: "white",
+
+const buttonStyle: CSSProperties = {
+   fontSize: 20,
+   fontWeight: '700'
 };
 
 const buttonsWrapperStyle: CSSProperties = {
@@ -19,10 +22,10 @@ const HeaderControllers: React.FC = () => {
 
    return (
       <Flex justify="space-between" align="center" style={buttonsWrapperStyle}>
-         <Button style={buttonStyle} type="link" href={CHANGE_LOG_URL} color="white" target="_blank">
+         <Button style={buttonStyle} type="link" href={CHANGE_LOG_URL} target="_blank">
             notick
          </Button>
-         <Button type="primary" onClick={onSettingsOpen}>
+         <Button color="primary" variant="filled" onClick={onSettingsOpen} icon={<SettingFilled />} iconPosition="end">
             Settings
          </Button>
       </Flex>

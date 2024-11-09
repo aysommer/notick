@@ -4,4 +4,5 @@ export type Note = {
    text: string;
    isPinned: boolean;
    isArchived: boolean;
+   isActive: boolean;
 };

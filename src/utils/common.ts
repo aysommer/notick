@@ -7,5 +7,6 @@ export function getNewNote(): Note {
       text: "",
       isPinned: false,
       isArchived: false,
+      isActive: true,
    };
 }

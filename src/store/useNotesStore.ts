@@ -1,6 +1,7 @@
 import type { Note } from "../types";
 import { create } from "zustand";
 import { getNewNote } from "../utils";
+import { setNoteToCache } from "./useNoteStore";
 
 type UseNotesStore = {
    notes: Note[];
@@ -10,6 +11,7 @@ type UseNotesStore = {
    updateNote(value: Note): void;
    deleteNote(id: Note["id"]): void;
    setSearchValue(value: string): void;
+   clearData(): void;
 };
 
 const LOCAL_STORAGE_KEY = "notes";
@@ -82,6 +84,18 @@ const useNotesStore = create<UseNotesStore>((set, get) => ({
          return {
             ...state,
             searchValue: value,
+         };
+      });
+   },
+   clearData() {
+      return set((state) => {
+         const notes: Note[] = [];
+         setNotesToCache(notes);
+         setNoteToCache(null);
+
+         return {
+            ...state,
+            notes,
          };
       });
    },

@@ -1,24 +1,24 @@
 import type { Note } from "../../types";
-import React from "react";
-import { Button, Dropdown, Flex } from "antd";
-import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
+import React, { CSSProperties, useMemo } from "react";
+import { Button, Dropdown, DropdownProps, MenuProps } from "antd";
+import { DeleteOutlined, PushpinOutlined, PushpinFilled } from "@ant-design/icons";
 import { useNotesStore, useNoteStore } from "../../store";
+import ItemAction from "./ItemAction";
 
-const listItemStyle: React.CSSProperties = {
+const listItemStyle: CSSProperties = {
    borderRadius: 0,
-   textAlign: "left",
+   justifyContent: "flex-start",
    textOverflow: "ellipsis",
    whiteSpace: "noWrap",
    overflow: "hidden",
 };
 
-const itemActionIconStyle: React.CSSProperties = {
-   marginLeft: 12,
-};
-
-const listItemIconStyle: React.CSSProperties = {
+const listItemIconStyle: CSSProperties = {
    marginRight: 8,
 };
+
+const ITEM_ACTIONS_TRIGGER: DropdownProps['trigger'] = ["contextMenu"];
+const DEFAULT_TEXT = "New note...";
 
 type NoteListItemProps = Note;
 
@@ -46,35 +46,29 @@ const NoteListItem: React.FC<NoteListItemProps> = (props) => {
       });
    };
 
+   const itemActions = useMemo<MenuProps>(() => ({
+      items: [
+         {
+            key: "togglePin",
+            label: <ItemAction text={!isPinned ? "Pin" : "Unpin"} icon={!isPinned ? <PushpinFilled /> : <PushpinOutlined />} />,
+            onClick: onTogglePinNote,
+         },
+         {
+            key: "delete",
+            label: <ItemAction text="Delete" icon={<DeleteOutlined />} />,
+            onClick: onDeleteNote,
+         },
+      ],
+   }), [isPinned])
+
    return (
       <Dropdown
-         menu={{
-            items: [
-               {
-                  key: "togglePin",
-                  label: (
-                     <Flex justify="space-between">
-                        {!isPinned ? "Pin" : "Unpin"} <PushpinOutlined style={itemActionIconStyle} />
-                     </Flex>
-                  ),
-                  onClick: onTogglePinNote,
-               },
-               {
-                  key: "delete",
-                  label: (
-                     <Flex justify="space-between">
-                        Delete <DeleteOutlined style={itemActionIconStyle} />
-                     </Flex>
-                  ),
-                  onClick: onDeleteNote,
-               },
-            ],
-         }}
-         trigger={["contextMenu"]}
+         menu={itemActions}
+         trigger={ITEM_ACTIONS_TRIGGER}
       >
          <Button style={listItemStyle} onClick={onSetNote} type="text">
             {isPinned ? <PushpinOutlined style={listItemIconStyle} /> : null}
-            {title ? title : "New note..."}
+            {title ? title : DEFAULT_TEXT}
          </Button>
       </Dropdown>
    );

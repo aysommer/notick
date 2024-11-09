@@ -47,6 +47,7 @@ const NoteView: React.FC = () => {
       const value = target.value;
 
       note.setNote({
+         ...note,
          [name]: value,
       });
    };

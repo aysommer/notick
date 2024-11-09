@@ -1,8 +1,13 @@
 import type { Color } from "antd/es/color-picker";
 import { ColorPicker, Flex, InputNumber, Modal, Button } from "antd";
-import React from "react";
-import { useModalStore } from "../../store";
+import { DeleteOutlined, RollbackOutlined } from "@ant-design/icons";
+import React, { CSSProperties } from "react";
+import { useModalStore, useNotesStore, useNoteStore } from "../../store";
 import useSettingsStore from "../../store/useSettingsStore";
+
+const headerStyle: CSSProperties = {
+   fontSize: 20
+};
 
 const SettingsModal: React.FC = () => {
    const setModal = useModalStore((state) => state.setModal);
@@ -11,6 +16,8 @@ const SettingsModal: React.FC = () => {
    const fontColor = useSettingsStore((state) => state.fontColor);
    const setSettings = useSettingsStore((state) => state.setSettings);
    const resetSettings = useSettingsStore((state) => state.resetSettings);
+   const clearData = useNotesStore((state) => state.clearData);
+   const setActive = useNoteStore((state) => state.setActive);
 
    const onOK = () => {
       setModal("settings", false);
@@ -32,13 +39,19 @@ const SettingsModal: React.FC = () => {
       });
    };
 
-   const onResetClick = () => {
+   const onClearData = () => {
+      clearData();
+      setActive(false);
+      setModal("settings", false);
+   };
+
+   const onResetSettings = () => {
       resetSettings();
       setModal("settings", false);
    };
 
    return (
-      <Modal title="Settings" open={isOpen} onOk={onOK} onCancel={onCancel} footer={null}>
+      <Modal title={<span style={headerStyle}>Settings</span>} open={isOpen} onOk={onOK} onCancel={onCancel} footer={null}>
          <Flex vertical gap={16}>
             <Flex gap={16} align="center">
                <span>Font size</span>
@@ -56,9 +69,14 @@ const SettingsModal: React.FC = () => {
                <span>Font color</span>
                <ColorPicker defaultValue={fontColor} value={fontColor} showText onChangeComplete={onFontColorChange} />
             </Flex>
-            <Button onClick={onResetClick} type="primary">
-               Reset
-            </Button>
+            <Flex gap={4} justify="flex-end">
+               <Button onClick={onClearData} danger icon={<DeleteOutlined />} iconPosition="end" type="primary">
+                  Clear data
+               </Button>
+               <Button onClick={onResetSettings} danger icon={<RollbackOutlined />} iconPosition="end">
+                  Reset settings
+               </Button>
+            </Flex>
          </Flex>
       </Modal>
    );
